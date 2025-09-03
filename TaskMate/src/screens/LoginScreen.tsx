@@ -1,6 +1,9 @@
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { StatusBar } from "expo-status-bar";
 import { useState } from "react";
 import {
+  Button,
   Image,
   KeyboardAvoidingView,
   Pressable,
@@ -10,40 +13,72 @@ import {
   TextInput,
   View,
 } from "react-native";
-import { AlertNotificationRoot } from "react-native-alert-notification";
+import { ALERT_TYPE, AlertNotificationRoot, Toast } from "react-native-alert-notification";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { RootStackParamList } from "../../App";
+import { useNavigation } from "@react-navigation/native";
+import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
+
+type LoginNavigationProps = NativeStackNavigationProp<RootStackParamList, "Login">;
 
 export default function LoginScreen() {
-  const BackendUrl = "https://causal-truly-liger.ngrok-free.app/TaskMate_Backend";
+  const navigation = useNavigation<LoginNavigationProps>();
+  const BackendUrl = "https://causal-truly-liger.ngrok-free.app";
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const handleLogin = async () => {
-    const response = await fetch(
-      `${BackendUrl}/UserLogin`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          email: email,
-          password: password,
-        }),
-      }
-    );
+    const response = await fetch(`${BackendUrl}/TaskMate_Backend/UserLogin`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email: email,
+        password: password,
+      }),
+    });
 
     const data = await response.json();
 
     if (response.ok) {
       if (data.status) {
-        console.log("Login successful:", data.message);
+        const jsonValue = JSON.stringify({
+          uid: data.uid,
+          name: data.name,
+          email: data.uemail,
+          genderId: data.genderId,
+          genderName: data.genderName,
+          profileImg: data.profileImg,
+          createdAt: data.createdAt,
+        });
+        try {
+          await AsyncStorage.setItem("loggedUser", jsonValue);
+        } catch (error) {
+          console.error("Error saving user data:", error);
+        }
+        Toast.show({
+          type: ALERT_TYPE.SUCCESS,
+          title: "Login successful",
+          textBody: data.message || "Welcome back!",
+        });
+        setTimeout(() => {
+          navigation.navigate("Home");
+        }, 1000);
       } else {
-        console.log("Error:", data.message);
+        Toast.show({
+          type: ALERT_TYPE.WARNING,
+          title: "Login failed",
+          textBody: data.message || "An error occurred",
+        });
       }
     } else {
-      console.log("Login failed.");
+      Toast.show({
+        type: ALERT_TYPE.DANGER,
+        title: "Login failed",
+        textBody: data.message || "An error occurred",
+      });
     }
   };
 
@@ -60,9 +95,16 @@ export default function LoginScreen() {
             showsVerticalScrollIndicator={false}
           >
             <View style={styles.content}>
+              <Pressable style={styles.backButton} onPress={() => navigation.navigate("Welcome")}>
+                <FontAwesome6
+                  name="circle-chevron-left"
+                  size={30}
+                  color="black"
+                />
+              </Pressable>
               <View style={styles.imageContainer}>
                 <Image
-                  source={require("./assets/logo.png")}
+                  source={require("../../assets/logo.png")}
                   style={styles.image}
                 />
               </View>
@@ -98,6 +140,14 @@ export default function LoginScreen() {
                 <Pressable style={styles.loginButton} onPress={handleLogin}>
                   <Text style={styles.loginButtonText}>Log In</Text>
                 </Pressable>
+                <Pressable
+                  style={styles.signupButton}
+                  onPress={() => navigation.navigate("Signup")}
+                >
+                  <Text style={styles.signupButtonText}>
+                    New to TaskMate? Sign Up
+                  </Text>
+                </Pressable>
               </View>
               <StatusBar style="auto" />
             </View>
@@ -111,20 +161,25 @@ export default function LoginScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#f4fbffff",
+    backgroundColor: "#eaf7ffff",
     alignItems: "center",
     justifyContent: "center",
     width: "100%",
   },
   scrollContainer: {
     flex: 1,
-    width: "75%",
+    width: "100%",
   },
   content: {
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
     width: "100%",
+  },
+  backButton: {
+    position: "absolute",
+    top: 10,
+    left: 20,
   },
   imageContainer: {
     marginVertical: 20,
@@ -149,7 +204,7 @@ const styles = StyleSheet.create({
     color: "#666",
   },
   form: {
-    width: "100%",
+    width: "75%",
     marginTop: 30,
   },
   inputContainer: {
@@ -179,8 +234,8 @@ const styles = StyleSheet.create({
   buttonContainer: {
     justifyContent: "center",
     alignItems: "center",
-    gap: 20,
-    width: "100%",
+    gap: 10,
+    width: "75%",
     marginTop: 5,
   },
   loginButton: {
@@ -193,6 +248,16 @@ const styles = StyleSheet.create({
   },
   loginButtonText: {
     color: "#fff",
+    fontWeight: "bold",
+  },
+  signupButton: {
+    paddingVertical: 12,
+    paddingHorizontal: 20,
+    borderRadius: 5,
+    alignItems: "center",
+  },
+  signupButtonText: {
+    color: "#0066ffff",
     fontWeight: "bold",
   },
 });

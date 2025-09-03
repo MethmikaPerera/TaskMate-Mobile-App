@@ -19,23 +19,23 @@ public class User {
     @Column(name = "id")
     private int id;
     
-    @Column(name = "name")
+    @Column(name = "name", nullable = false, length = 100)
     private String name;
     
-    @Column(name = "email")
+    @Column(name = "email", nullable = false, length = 100)
     private String email;
     
-    @Column (name = "password")
+    @Column (name = "password", nullable = false, length = 20)
     private String password;
     
-    @Column (name = "profile_img")
+    @Column (name = "profile_img", nullable = false)
     private String profileImg;
     
     @ManyToOne
-    @JoinColumn (name = "gender_id")
+    @JoinColumn (name = "gender_id", nullable = false)
     private Gender gender;
     
-    @Column (name = "created_at")
+    @Column (name = "created_at", nullable = false)
     private Date createdAt;
     
     public User() {}

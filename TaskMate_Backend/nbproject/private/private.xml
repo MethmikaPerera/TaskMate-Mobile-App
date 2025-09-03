@@ -1,4 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
+    <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
+        <group>
+            <file>file:/C:/Users/user/Documents/GitHub/TaskMate-Mobile-App/TaskMate_Backend/src/java/controller/UserSignup.java</file>
+            <file>file:/C:/Users/user/Documents/GitHub/TaskMate-Mobile-App/TaskMate_Backend/src/java/controller/UserLogin.java</file>
+            <file>file:/C:/Users/user/Documents/GitHub/TaskMate-Mobile-App/TaskMate_Backend/src/java/controller/CreateTask.java</file>
+            <file>file:/C:/Users/user/Documents/GitHub/TaskMate-Mobile-App/TaskMate_Backend/src/java/controller/UpdateTaskStatus.java</file>
+            <file>file:/C:/Users/user/Documents/GitHub/TaskMate-Mobile-App/TaskMate_Backend/src/java/controller/UpdatePassword.java</file>
+            <file>file:/C:/Users/user/Documents/GitHub/TaskMate-Mobile-App/TaskMate_Backend/src/java/controller/GetTasks.java</file>
+            <file>file:/C:/Users/user/Documents/GitHub/TaskMate-Mobile-App/TaskMate_Backend/src/java/controller/DeleteTask.java</file>
+        </group>
+    </open-files>
 </project-private>

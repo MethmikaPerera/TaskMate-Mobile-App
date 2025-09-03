@@ -1,14 +1,20 @@
+import { useNavigation } from "@react-navigation/native";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { StatusBar } from "expo-status-bar";
-import { Image, Pressable, StyleSheet, Text, View } from "react-native";
+import { Button, Image, Pressable, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { RootStackParamList } from "../../App";
+
+type WelcomeNavigationProps = NativeStackNavigationProp<RootStackParamList, "Welcome">;
 
 export default function WelcomeScreen() {
+  const navigation = useNavigation<WelcomeNavigationProps>();
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.content}>
         <View style={styles.imageContainer}>
           <Image
-            source={require("./assets/welcome-img.png")}
+            source={require("../../assets/welcome-img.png")}
             style={styles.image}
           />
         </View>
@@ -17,10 +23,20 @@ export default function WelcomeScreen() {
           <Text style={styles.subtitle}>Your every day task manager.</Text>
         </View>
         <View style={styles.buttonContainer}>
-          <Pressable style={styles.loginButton}>
+          <Pressable
+            style={styles.loginButton}
+            onPress={() => {
+              navigation.navigate("Login");
+            }}
+          >
             <Text style={styles.loginButtonText}>Log In</Text>
           </Pressable>
-          <Pressable style={styles.registerButton}>
+          <Pressable
+            style={styles.registerButton}
+            onPress={() => {
+              navigation.navigate("Signup");
+            }}
+          >
             <Text style={styles.registerButtonText}>Register</Text>
           </Pressable>
         </View>
@@ -33,7 +49,7 @@ export default function WelcomeScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#f4fbffff",
+    backgroundColor: "#eaf7ffff",
     alignItems: "center",
     justifyContent: "center",
   },

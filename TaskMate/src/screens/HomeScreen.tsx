@@ -212,11 +212,6 @@ export default function HomeScreen() {
                       />
                       <Text style={styles.taskItemText}>{task.title}</Text>
                       <View style={styles.taskItemActions}>
-                        {/* <Pressable>
-                          <Text style={styles.editIcon}>
-                            <FontAwesome6 name="edit" size={20} color="blue" />
-                          </Text>
-                        </Pressable> */}
                         <Pressable
                           onPress={() => {
                             handleTaskDelete(task.id);
